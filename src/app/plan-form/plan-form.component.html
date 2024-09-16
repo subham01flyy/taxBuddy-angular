@@ -1,0 +1,122 @@
+<form [formGroup]="planForm" (ngSubmit)="onSubmit()">
+  <!-- Plan Name -->
+  <label>Plan Name</label>
+  <input formControlName="planName" type="text" />
+  <div
+    *ngIf="
+      planForm.get('planName')?.invalid && planForm.get('planName')?.touched
+    "
+  >
+    Please enter a valid plan name.
+  </div>
+
+  <!-- Short Description -->
+  <label>Description</label>
+  <input formControlName="shortDescription" type="text" />
+  <div
+    *ngIf="
+      planForm.get('shortDescription')?.invalid &&
+      planForm.get('shortDescription')?.touched
+    "
+  >
+    Please enter a valid short description.
+  </div>
+
+  <!-- Base Price -->
+  <label>Base Price (₹)</label>
+  <input
+    formControlName="basePrice"
+    type="number"
+    (input)="calculateTotalAmount()"
+  />
+  <div
+    *ngIf="
+      planForm.get('basePrice')?.invalid && planForm.get('basePrice')?.touched
+    "
+  >
+    Please enter a valid base price.
+  </div>
+
+  <!-- CGST -->
+  <label>CGST (₹)</label>
+  <input formControlName="cgst" type="number" (input)="calculateTotalTax()" />
+  <div *ngIf="planForm.get('cgst')?.invalid && planForm.get('cgst')?.touched">
+    Please enter a valid CGST amount.
+  </div>
+
+  <!-- SGST -->
+  <label>SGST (₹)</label>
+  <input formControlName="sgst" type="number" (input)="calculateTotalTax()" />
+  <div *ngIf="planForm.get('sgst')?.invalid && planForm.get('sgst')?.touched">
+    Please enter a valid SGST amount.
+  </div>
+
+  <!-- IGST -->
+  <label>IGST (₹)</label>
+  <input formControlName="igst" type="number" (input)="calculateTotalTax()" />
+  <div *ngIf="planForm.get('igst')?.invalid && planForm.get('igst')?.touched">
+    Please enter a valid IGST amount.
+  </div>
+
+  <!-- Total Tax -->
+  <label>Total Tax (₹)</label>
+  <input formControlName="totalTax" type="number" readonly />
+  <div
+    *ngIf="
+      planForm.get('totalTax')?.invalid && planForm.get('totalTax')?.touched
+    "
+  >
+    Total tax must equal the sum of CGST, SGST, and IGST.
+  </div>
+
+  <!-- Total Amount -->
+  <label>Total Amount (₹)</label>
+  <input formControlName="totalAmount" type="number" readonly />
+  <div
+    *ngIf="
+      planForm.get('totalAmount')?.invalid &&
+      planForm.get('totalAmount')?.touched
+    "
+  >
+    Total amount should be the sum of base price and total tax.
+  </div>
+
+  <!-- Active Status -->
+  <label>Active Status</label>
+  <input formControlName="isActive" type="checkbox" />
+
+  <!-- Services Type -->
+  <label>Services Type</label>
+  <input formControlName="servicesType" type="text" />
+  <div
+    *ngIf="
+      planForm.get('servicesType')?.invalid &&
+      planForm.get('servicesType')?.touched
+    "
+  >
+    Please enter a valid services type (e.g., 'ITR').
+  </div>
+
+  <!-- Valid For Days -->
+  <label>Validity (Days)</label>
+  <input formControlName="validForDays" type="number" />
+  <div
+    *ngIf="
+      planForm.get('validForDays')?.invalid &&
+      planForm.get('validForDays')?.touched
+    "
+  >
+    Please enter the validity in days (e.g., 365).
+  </div>
+
+  <!-- Due Days -->
+  <label>Due Days</label>
+  <input formControlName="dueDays" type="number" />
+  <div
+    *ngIf="planForm.get('dueDays')?.invalid && planForm.get('dueDays')?.touched"
+  >
+    Please enter the number of due days (e.g., 10).
+  </div>
+
+  <button type="submit" [disabled]="planForm.invalid">Create Plan</button>
+</form>

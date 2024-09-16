@@ -1,0 +1,262 @@
+<div class="container mt-5 shadow-sm p-4 bg-white rounded">
+  <h2 class="text-center mb-4">Create a New Plan</h2>
+  <p
+    style="
+      text-align: center;
+      color: grey;
+      font-size: 10px;
+      margin-bottom: 15px;
+    "
+  >
+    Please fill out this form to provide your tax information.
+  </p>
+  <form [formGroup]="planForm" (ngSubmit)="onSubmit()">
+    <!-- Plan Name -->
+    <div class="mb-3 form-div">
+      <label for="planName" class="form-label">Plan Name</label>
+      <input
+        type="text"
+        id="planName"
+        class="form-control"
+        formControlName="planName"
+        placeholder="Enter the plan name"
+      />
+      <div
+        *ngIf="
+          planForm.get('planName')?.invalid && planForm.get('planName')?.touched
+        "
+        class="text-danger mt-1"
+      >
+        Please enter a valid plan name.
+      </div>
+    </div>
+
+    <!-- Short Description -->
+    <div class="mb-3 form-div">
+      <label for="shortDescription" class="form-label">Description</label>
+      <textarea
+        id="shortDescription"
+        class="form-control"
+        formControlName="shortDescription"
+        rows="3"
+        placeholder="Enter a brief description"
+      ></textarea>
+      <div
+        *ngIf="
+          planForm.get('shortDescription')?.invalid &&
+          planForm.get('shortDescription')?.touched
+        "
+        class="text-danger mt-1"
+      >
+        Please enter a valid short description.
+      </div>
+    </div>
+
+    <!-- Base Price -->
+    <div class="mb-3 form-div">
+      <label for="basePrice" class="form-label">Base Price (₹)</label>
+      <input
+        type="number"
+        id="basePrice"
+        class="form-control"
+        formControlName="basePrice"
+        placeholder="Enter the base price"
+        (input)="calculateTotalAmount()"
+      />
+      <div
+        *ngIf="
+          planForm.get('basePrice')?.invalid &&
+          planForm.get('basePrice')?.touched
+        "
+        class="text-danger mt-1"
+      >
+        Please enter a valid base price.
+      </div>
+    </div>
+
+    <!-- CGST, SGST, IGST -->
+    <div class="row">
+      <div class="col-md-4">
+        <div class="mb-3 form-div">
+          <label for="cgst" class="form-label">CGST (₹)</label>
+          <input
+            type="number"
+            id="cgst"
+            class="form-control"
+            formControlName="cgst"
+            placeholder="Enter CGST"
+            (input)="calculateTotalTax()"
+          />
+          <div
+            *ngIf="
+              planForm.get('cgst')?.invalid && planForm.get('cgst')?.touched
+            "
+            class="text-danger mt-1"
+          >
+            Please enter a valid CGST amount.
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="mb-3 form-div">
+          <label for="sgst" class="form-label">SGST (₹)</label>
+          <input
+            type="number"
+            id="sgst"
+            class="form-control"
+            formControlName="sgst"
+            placeholder="Enter SGST"
+            (input)="calculateTotalTax()"
+          />
+          <div
+            *ngIf="
+              planForm.get('sgst')?.invalid && planForm.get('sgst')?.touched
+            "
+            class="text-danger mt-1"
+          >
+            Please enter a valid SGST amount.
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="mb-3 form-div">
+          <label for="igst" class="form-label">IGST (₹)</label>
+          <input
+            type="number"
+            id="igst"
+            class="form-control"
+            formControlName="igst"
+            placeholder="Enter IGST"
+            (input)="calculateTotalTax()"
+          />
+          <div
+            *ngIf="
+              planForm.get('igst')?.invalid && planForm.get('igst')?.touched
+            "
+            class="text-danger mt-1"
+          >
+            Please enter a valid IGST amount.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total Tax -->
+    <div class="mb-3 form-div">
+      <label for="totalTax" class="form-label">Total Tax (₹)</label>
+      <input
+        type="number"
+        id="totalTax"
+        class="form-control"
+        formControlName="totalTax"
+        readonly
+      />
+      <div
+        *ngIf="
+          planForm.get('totalTax')?.invalid && planForm.get('totalTax')?.touched
+        "
+        class="text-danger mt-1"
+      >
+        Total tax must equal the sum of CGST, SGST, and IGST.
+      </div>
+    </div>
+
+    <!-- Total Amount -->
+    <div class="mb-3 form-div">
+      <label for="totalAmount" class="form-label">Total Amount (₹)</label>
+      <input
+        type="number"
+        id="totalAmount"
+        class="form-control"
+        formControlName="totalAmount"
+        readonly
+      />
+      <div
+        *ngIf="
+          planForm.get('totalAmount')?.invalid &&
+          planForm.get('totalAmount')?.touched
+        "
+        class="text-danger mt-1"
+      >
+        Total amount should be the sum of base price and total tax.
+      </div>
+    </div>
+
+    <!-- Active Status -->
+    <div class="form-check mb-3" style="margin-bottom: 20px">
+      <input
+        type="checkbox"
+        id="isActive"
+        class="form-check-input"
+        formControlName="isActive"
+      />
+      <label for="isActive" class="form-check-label">Active Status</label>
+    </div>
+
+    <!-- Services Type -->
+    <div class="mb-3 form-div">
+      <label for="servicesType" class="form-label">Services Type</label>
+      <input
+        type="text"
+        id="servicesType"
+        class="form-control"
+        formControlName="servicesType"
+        placeholder="Enter the services type (e.g., ITR, TPA)"
+      />
+      <div
+        *ngIf="
+          planForm.get('servicesType')?.invalid &&
+          planForm.get('servicesType')?.touched
+        "
+        class="text-danger mt-1"
+      >
+        Please enter a valid services type.
+      </div>
+    </div>
+
+    <!-- Validity -->
+    <div class="mb-3 form-div">
+      <label for="validForDays" class="form-label">Validity (Days)</label>
+      <input
+        type="number"
+        id="validForDays"
+        class="form-control"
+        formControlName="validForDays"
+        placeholder="Enter validity in days"
+      />
+      <div
+        *ngIf="
+          planForm.get('validForDays')?.invalid &&
+          planForm.get('validForDays')?.touched
+        "
+        class="text-danger mt-1"
+      >
+        Please enter the validity in days.
+      </div>
+    </div>
+
+    <!-- Due Days -->
+    <div class="mb-3 form-div">
+      <label for="dueDays" class="form-label">Due Days</label>
+      <input
+        type="number"
+        id="dueDays"
+        class="form-control"
+        formControlName="dueDays"
+        placeholder="Enter due days"
+      />
+      <div
+        *ngIf="
+          planForm.get('dueDays')?.invalid && planForm.get('dueDays')?.touched
+        "
+        class="text-danger mt-1"
+      >
+        Please enter the number of due days.
+      </div>
+    </div>
+
+    <div style="display: flex; justify-content: center">
+      <button type="submit" class="btn btn-primary w-100">Create Plan</button>
+    </div>
+  </form>
+</div>
